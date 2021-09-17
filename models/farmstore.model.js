@@ -1,6 +1,6 @@
 const mg = require( 'mongoose' );
 
-const productScheme = new mg.Schema( {
+const storeScheme = new mg.Schema( {
     name: {
         type: String,
         required: [ true, 'No name!' ]
@@ -23,4 +23,4 @@ const productScheme = new mg.Schema( {
     }
 } )
 
-module.exports = mg.model( 'Product', productScheme, 'product' );
+module.exports = mg.model( 'Stores', storeScheme, 'stores' );

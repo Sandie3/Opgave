@@ -1,4 +1,4 @@
-const Product = require( '../models/farmstore.model' )
+const Farmstore = require( '../models/farmstore.model' )
 
 const express = require( 'express' );
 const router = express.Router();
@@ -36,16 +36,16 @@ const upload = multer( {
 
 } )
 
-// GET all products
+// GET all store
 router.get( '/', async ( req, res ) => {
 
-    console.log( 'GET all products' )
+    console.log( 'GET all farmstores' )
 
     try {
 
-        let products = await Product.find(); // Find all
+        let store = await Farmstore.find(); // Find all
 
-        return res.status( 200 ).json( products )
+        return res.status( 200 ).json( store )
 
     } catch ( err ) {
 
@@ -57,20 +57,20 @@ router.get( '/', async ( req, res ) => {
 
 } )
 
-// GET product from ID
+// GET store from ID
 router.get( '/:id', async ( req, res ) => {
 
     console.log( 'GET product', req.params.id )
 
     try {
 
-        let product = await Product.findById( req.params.id ); // Find by ID
+        let store = await Farmstore.findById( req.params.id ); // Find by ID
 
-        if ( !product ) {
+        if ( !store ) {
             return res.status( 401 ).json( { message: "No product!" } )
         }
 
-        return res.status( 200 ).json( product )
+        return res.status( 200 ).json( store )
 
     } catch ( err ) {
 
@@ -82,14 +82,14 @@ router.get( '/:id', async ( req, res ) => {
 
 } )
 
-// Search for product from keywords
+// Search for store from keywords
 router.get( '/search/:key', async ( req, res ) => {
 
     console.log( 'GET product from search', req.params.key )
 
     try {
 
-        let products = await Product.find( {
+        let store = await Farmstore.find( {
             $or: [
                 // Search for keyword no matter the capitalization
                 { 'name': { "$regex": req.params.key, "$options": "i" } },
@@ -97,7 +97,7 @@ router.get( '/search/:key', async ( req, res ) => {
             ]
         } );
 
-        return res.status( 200 ).json( products )
+        return res.status( 200 ).json( store )
 
     } catch ( err ) {
 
@@ -112,19 +112,19 @@ router.get( '/search/:key', async ( req, res ) => {
 // ADMIN
 // -----------------------------------------------------------------------------------------------
 
-// POST new product
+// POST new store
 router.post( '/admin', upload.single( 'image' ), async ( req, res ) => {
 
     console.log( 'POST product' )
 
     try {
 
-        let product = new Product( req.body )
-        product.image = req.file.filename
+        let store = new Farmstore( req.body )
+        store.image = req.file.filename
         // product.image = req.file ? req.file.filename : 'noimage.jpg'
-        product = await product.save()
+        store = await store.save()
 
-        res.status( 200 ).json( { message: 'New product is created', created: product } )
+        res.status( 200 ).json( { message: 'New product is created', created: store } )
 
     } catch ( err ) {
 
@@ -134,7 +134,7 @@ router.post( '/admin', upload.single( 'image' ), async ( req, res ) => {
 
 } )
 
-// PUT - Edit product from id
+// PUT - Edit store from id
 router.put( '/admin/:id', upload.single( 'image' ), async ( req, res ) => {
 
     console.log( 'PUT product' )
@@ -142,21 +142,20 @@ router.put( '/admin/:id', upload.single( 'image' ), async ( req, res ) => {
     try {
 
         if ( req.file ) {
-            // replace old image name with new image name
+
             req.body.image = req.file.filename
 
-            // If you want to delete image/file
-            const oldProduct = await Product.find( req.params.id )
-            fs.unlink( './public/images/' + oldProduct.image, ( err ) => {
+            const oldImage = await Farmstore.find( req.params.id )
+            fs.unlink( './public/images/' + oldImage.image, ( err ) => {
                 if ( err ) throw err;
                 console.log( 'Image deleted' )
             } )
 
         }
 
-        let product = await Product.findByIdAndUpdate( { _id: req.params.id }, req.body, { new: true } )
+        let store = await Farmstore.findByIdAndUpdate( { _id: req.params.id }, req.body, { new: true } )
 
-        res.status( 200 ).json( { message: 'New product is created', created: product } )
+        res.status( 200 ).json( { message: 'New product is created', created: store } )
 
     } catch ( err ) {
 
@@ -166,20 +165,20 @@ router.put( '/admin/:id', upload.single( 'image' ), async ( req, res ) => {
 
 } )
 
-// DELETE a product
+// DELETE a store
 router.delete( '/admin/:id', async ( req, res ) => {
 
     console.log( 'DELETE product from ID' )
 
     try {
 
-        const oldProduct = await Product.findById( req.params.id )
-        fs.unlink( './public/images/' + oldProduct.image, ( err ) => {
+        const oldImage = await Farmstore.findById( req.params.id )
+        fs.unlink( './public/images/' + oldImage.image, ( err ) => {
             if ( err ) throw err;
             console.log( 'Image deleted' )
         } )
 
-        await Product.findByIdAndDelete( req.params.id ); // Find by ID
+        await Farmstore.findByIdAndDelete( req.params.id );
 
         return res.status( 200 ).json( { message: 'Deleted product' } )
 

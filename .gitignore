@@ -1,4 +1,3 @@
-.env
 node_modules/
 
 # binaries
@@ -14,4 +13,5 @@ npm-debug.log*
 # other
 _OM
 _OM.txt
-public/images/
+
+*.jpg
