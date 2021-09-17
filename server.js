@@ -52,17 +52,17 @@ app.use( session( {
 
 // ---- AUTH CHECK
 // ------------------------------------------
-// app.use( '*/admin*', async ( req, res, next ) => {
+app.use( '*/admin*', async ( req, res, next ) => {
 
-//     // If user is logged in
-//     if (req.session && req.session.userId) {
-//         return next()
-//     } else {
-//         console.log('Login unauthorized')
-//         return res.status( 401 ).json( { message: 'Unauthorized' } )
-//     }
+    // If user is logged in
+    if (req.session && req.session.userId) {
+        return next()
+    } else {
+        console.log('Login unauthorized')
+        return res.status( 401 ).json( { message: 'Unauthorized' } )
+    }
 
-// } )
+} )
 
 // ---- ROUTES
 // ------------------------------------------
