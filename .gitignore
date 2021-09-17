@@ -1,0 +1,17 @@
+.env
+node_modules/
+
+# binaries
+bin/
+dist/
+lib/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# other
+_OM
+_OM.txt
+public/images/
