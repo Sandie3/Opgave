@@ -75,7 +75,7 @@ router.delete( '/admin/:id', async ( req, res ) => {
 
     try {
 
-        await Farmstore.findByIdAndDelete( req.params.id );
+        await User.findByIdAndDelete( req.params.id );
 
         return res.status( 200 ).json( { message: 'Deleted user' } )
 
