@@ -60,14 +60,14 @@ router.get( '/', async ( req, res ) => {
 // GET store from ID
 router.get( '/:id', async ( req, res ) => {
 
-    console.log( 'GET product', req.params.id )
+    console.log( 'GET store', req.params.id )
 
     try {
 
         let store = await Farmstore.findById( req.params.id ); // Find by ID
 
         if ( !store ) {
-            return res.status( 401 ).json( { message: "No product!" } )
+            return res.status( 401 ).json( { message: "No store!" } )
         }
 
         return res.status( 200 ).json( store )
@@ -85,7 +85,7 @@ router.get( '/:id', async ( req, res ) => {
 // Search for store from keywords
 router.get( '/search/:key', async ( req, res ) => {
 
-    console.log( 'GET product from search', req.params.key )
+    console.log( 'GET store from search', req.params.key )
 
     try {
 
@@ -115,16 +115,16 @@ router.get( '/search/:key', async ( req, res ) => {
 // POST new store
 router.post( '/admin', upload.single( 'image' ), async ( req, res ) => {
 
-    console.log( 'POST product' )
+    console.log( 'POST store' )
 
     try {
 
         let store = new Farmstore( req.body )
         store.image = req.file.filename
-        // product.image = req.file ? req.file.filename : 'noimage.jpg'
+        // store.image = req.file ? req.file.filename : 'noimage.jpg'
         store = await store.save()
 
-        res.status( 200 ).json( { message: 'New product is created', created: store } )
+        res.status( 200 ).json( { message: 'New store is created', created: store } )
 
     } catch ( err ) {
 
@@ -137,7 +137,7 @@ router.post( '/admin', upload.single( 'image' ), async ( req, res ) => {
 // PUT - Edit store from id
 router.put( '/admin/:id', upload.single( 'image' ), async ( req, res ) => {
 
-    console.log( 'PUT product' )
+    console.log( 'PUT store' )
 
     try {
 
@@ -155,7 +155,7 @@ router.put( '/admin/:id', upload.single( 'image' ), async ( req, res ) => {
 
         let store = await Farmstore.findByIdAndUpdate( { _id: req.params.id }, req.body, { new: true } )
 
-        res.status( 200 ).json( { message: 'New product is created', created: store } )
+        res.status( 200 ).json( { message: 'New store is created', created: store } )
 
     } catch ( err ) {
 
@@ -168,7 +168,7 @@ router.put( '/admin/:id', upload.single( 'image' ), async ( req, res ) => {
 // DELETE a store
 router.delete( '/admin/:id', async ( req, res ) => {
 
-    console.log( 'DELETE product from ID' )
+    console.log( 'DELETE store from ID' )
 
     try {
 
@@ -180,7 +180,7 @@ router.delete( '/admin/:id', async ( req, res ) => {
 
         await Farmstore.findByIdAndDelete( req.params.id );
 
-        return res.status( 200 ).json( { message: 'Deleted product' } )
+        return res.status( 200 ).json( { message: 'Deleted store' } )
 
     } catch ( err ) {
 
